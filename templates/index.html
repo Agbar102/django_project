@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+     <h1>SOFTECH.KG</h1>
+<ul>
+    {% for item in items %}
+        <li>
+            {{item.title}} - {{item.price}} usd. -
+            {% if item.color == "Черный"%}
+            <b style="color: red">{{ item.color }}</b>
+            {% elif item.color == "Серый"%}
+            <b style="color: grey">{{ item.color }}</b>
+            {% elif item.color == "white"%}
+            <b style="color: white; background-color: black">{{ item.color }}</b>
+            {% else %}
+            {{ item.color }}
+            {% endif %}
+        </li>
+    {% endfor %}
+</ul>
+
+</body>
+</html>
