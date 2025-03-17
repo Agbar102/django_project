@@ -5,6 +5,7 @@ from ckeditor.fields import RichTextField
 class Banner(models.Model):
     name = models.CharField("Имя", max_length=100)
     banner = models.ImageField(upload_to="tovar", verbose_name="Баннер", null=True, blank=True)
+    link = models.URLField("ссылка", max_length=100, null=True, blank=False)
 
     class Meta:
         verbose_name = "Баннер"

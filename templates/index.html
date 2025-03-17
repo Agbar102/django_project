@@ -1,27 +1,19 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Баннеры</title>
 </head>
 <body>
-     <h1>SOFTECH.KG</h1>
-<ul>
-    {% for item in items %}
-        <li>
-            {{item.title}} - {{item.price}} usd. -
-            {% if item.color == "Черный"%}
-            <b style="color: red">{{ item.color }}</b>
-            {% elif item.color == "Серый"%}
-            <b style="color: grey">{{ item.color }}</b>
-            {% elif item.color == "white"%}
-            <b style="color: white; background-color: black">{{ item.color }}</b>
-            {% else %}
-            {{ item.color }}
-            {% endif %}
-        </li>
+    {% for banner in banners %}
+        <div>
+            <h2>{{ banner.name }}</h2>
+          {% if banner.banner %}
+    <a href="{% if banner.link %}{{ banner.link }}{% else %}#{% endif %}">
+        <img src="{{ banner.banner.url }}" alt="{{ banner.name }}" width="300">
+    </a>
+{% endif %}
+        </div>
+        <hr>
     {% endfor %}
-</ul>
-
 </body>
 </html>
