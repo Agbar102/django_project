@@ -2,21 +2,8 @@ from django.db import models
 
 from ckeditor.fields import RichTextField
 
-class Banner(models.Model):
-    name = models.CharField("Имя", max_length=100)
-    banner = models.ImageField(upload_to="tovar", verbose_name="Баннер", null=True, blank=True)
-    link = models.URLField("ссылка", max_length=100, null=True, blank=False)
 
-    class Meta:
-        verbose_name = "Баннер"
-        verbose_name_plural = "Баннеры"
-
-    def __str__(self):
-        return self.name
-
-
-
-class User(models.Model ):
+class User(models.Model):
     name = models.CharField("Имя", max_length=100)
     phone_number = models.CharField("Номер телефона", max_length=12)
 
@@ -88,14 +75,7 @@ class Characteristic(models.Model):
     def __str__(self):
         return self.item.title
 
-# class Contacts(models.Model):
-#     location = models.CharField(verbose_name="Местоположения" , max_length=255)
-#     time_work = models.TimeField(verbose_name="Время работы",default="Работаем с 09:00 до 18:00", max_length=255)
-#     number_phone = models.CharField(verbose_name="Тел:", max_length=255)
-#     gmai = models.CharField(verbose_name="Email:", max_length=255)
-#
-#     class Meta:
-#         ordering = ['name']
+
 
 
 

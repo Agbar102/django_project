@@ -2,11 +2,8 @@ from django.contrib import admin
 from django.contrib.admin import TabularInline
 from adminsortable2.admin import SortableAdminMixin
 
-from .models import Item, Category, Subcategory, Characteristic, User, Banner
+from .models import Item, Category, Subcategory, Characteristic, User
 
-@admin.register(Banner)
-class BannerAdmin(admin.ModelAdmin):
-    pass
 
 class CharacteristicInline(TabularInline):
     model = Characteristic
@@ -31,9 +28,5 @@ class Subcategory(SortableAdminMixin, admin.ModelAdmin):
 class CategoryAdmin(SortableAdminMixin, admin.ModelAdmin):
     pass
 
-# @admin.register(Contacts)
-# class ContactsAdmin(SortableAdminMixin, admin.ModelAdmin):
-#     pass
 
-# admin.site.register(Item, ItemAdmin)
 
