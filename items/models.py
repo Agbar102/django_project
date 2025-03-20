@@ -44,7 +44,6 @@ class Subcategory(models.Model):
 
 
 class Item(models.Model):
-    user = models.ManyToManyField(User, related_name="items")
     sub_category = models.ForeignKey(Subcategory, on_delete=models.CASCADE, related_name="items", null=True)
     image = models.ImageField(upload_to="tovar", verbose_name="Главная картинка товара", null=True, blank=True)
     title = models.CharField(verbose_name="Заголовок товара", max_length=255)
@@ -77,7 +76,25 @@ class Characteristic(models.Model):
         return self.item.title
 
 class Cart(models.Model):
-    item = models.ForeignKey(Item, on_delete=)
+    item = models.ForeignKey("user.User", on_delete=models.CASCADE, related_name="cart")
+
+    class Meta:
+        verbose_name = "Корзина"
+        verbose_name_plural = "Корзины"
+
+    def __str__(self):
+        return self.user.first_name
+
+
+class CartItem(models.Model):
+    item = models.ForeignKey(Item, on_delete=models.CASCADE, related_name="cart_item")
+    cart = models.ForeignKey(Cart, on_delete=models.CASCADE, related_name="cart_item")
+    amount = models.PositiveIntegerField("Количество", default=1)
+
+    class Meta:
+        unique_together = ('cart', 'item')
+
+
 
 
 

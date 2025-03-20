@@ -1,16 +1,11 @@
 from django.shortcuts import render
-from items.models import Item, Banner
+from items.models import Category
 
 
 
 
-# Create your views here.
-def index_page(request):
-    items = Item.objects.all()
-    return render(request, 'index.html', {'items': items})
 
-def banner_view(request):
-    banners = Banner.objects.all()
-    return render(request, 'index.html',{'banners': banners})
-
+def get_category(request):
+    items = Category.objects.all()
+    return render(request, 'base.html', {'items': items})
 
