@@ -75,24 +75,32 @@ class Characteristic(models.Model):
     def __str__(self):
         return self.item.title
 
+
+
 class Cart(models.Model):
-    item = models.ForeignKey("user.User", on_delete=models.CASCADE, related_name="cart")
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="carts")
 
     class Meta:
         verbose_name = "Корзина"
         verbose_name_plural = "Корзины"
 
     def __str__(self):
-        return self.user.first_name
+        return f"Корзина пользователя {self.user.name}"
 
 
 class CartItem(models.Model):
-    item = models.ForeignKey(Item, on_delete=models.CASCADE, related_name="cart_item")
-    cart = models.ForeignKey(Cart, on_delete=models.CASCADE, related_name="cart_item")
+    item = models.ForeignKey("Item", on_delete=models.CASCADE, related_name="cart_items")
+    cart = models.ForeignKey(Cart, on_delete=models.CASCADE, related_name="cart_items")
     amount = models.PositiveIntegerField("Количество", default=1)
 
     class Meta:
+        verbose_name = "Элемент корзины"
+        verbose_name_plural = "Элементы корзины"
         unique_together = ('cart', 'item')
+
+    def __str__(self):
+        return f"{self.amount} x {self.item.title} (в корзине {self.cart.user.name})"
+
 
 
 

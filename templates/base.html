@@ -2,16 +2,18 @@
 <html>
 <head>
     <meta charset="UTF-8">
-  <title>main page</title>
+    <title>Главная страница</title>
 </head>
 <body>
-  <h1>
-      магазин электрники Softech
-  </h1>
-{% for items %}
-<h2>
-    Категории
-    {% for category in items %}
-</h2>
+    <h1>Магазин электроники Softech</h1>
+
+    <h2>Категории</h2>
+    <ul>
+        {% for category in items %}
+            <li>{{ category.name }}</li>
+        {% empty %}
+            <li>Нет категорий</li>
+        {% endfor %}
+    </ul>
 </body>
 </html>
