@@ -104,7 +104,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'postgres',
         'USER': 'postgres',
-        'PASSWORD': 'Agbar5566',
+        'PASSWORD': 'postgresql',
         'HOST': 'localhost',
         'PORT': '5432',
     }
@@ -176,3 +176,5 @@ LANGUAGES = (
 )
 
 MODELTRANSLATION_DEFAULT_LANGUAGE = 'ru'
+
+AUTH_USER_MODEL = 'users.CustomUser'
