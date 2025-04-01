@@ -5,3 +5,6 @@ cheker.py
 db.sqlite3
 .idea
 venv
+envs/.env
+envs/.env_prod/
+envs/.env_test/

@@ -14,7 +14,7 @@ class Command(BaseCommand):
             price=78000,
             production='China',
             model='iphone 13 pro',
-            is_available=True,
+            is_available=False,
             color='black',
 
         )
