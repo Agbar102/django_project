@@ -17,7 +17,7 @@ Including another URLconf
 from django.conf import settings
 from django.contrib import admin
 from django.urls import path
-from items.views import get_category, about, base
+# from items.views import get_category, about, base
 from softech.front import front_urlpatterns
 
 urlpatterns = [

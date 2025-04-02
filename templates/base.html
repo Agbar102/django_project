@@ -1,194 +1,566 @@
-
 {% load static %}
 {% load solo_tags %}
 {% get_solo "common.Contacts" as contacts %}
+
 
 <!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<!--    <link rel="stylesheet" href="{% static 'css/styles.css' %}">-->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
-    <title>SOFTEC</title>
+    <title>Интернет-магазин</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            line-height: 1.6;
+        * {
             margin: 0;
             padding: 0;
-            background-color: #f4f4f4;
-            color: #333;
-        }
-        header, nav, section, footer {
-            margin: 20px;
-            padding: 20px;
-            background: #fff;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        header {
-            text-align: center;
-            background: #007BFF;
-            color: #fff;
-        }
-        nav ul {
-            padding: 0;
-            list-style: none;
-            text-align: center;
-        }
-        nav ul li {
-            display: inline;
-            margin: 0 10px;
-        }
-        nav ul li a {
-            text-decoration: none;
-            color: #007BFF;
-        }
-        nav ul li a:hover {
-            text-decoration: underline;
-        }
-        footer {
-            text-align: center;
-            background: #333;
-            color: #fff;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
         }
 
-        /* Стили для каталога */
-        .category {
-            margin-bottom: 15px;
-            padding: 12px;
-            background: #f0f8ff;
-            border-radius: 8px;
-            border-left: 4px solid #007BFF;
+        body {
+            background-color: #f5f5f5;
+        }
+
+        header {
+            background-color: #333;
+            color: white;
+            padding: 1rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        nav {
+            background-color: #444;
+        }
+
+        .menu {
+            display: flex;
+            list-style: none;
             position: relative;
         }
-        .category h3 {
-            margin: 0;
-            padding: 5px;
-            color: #007BFF;
+
+        .menu-item {
+            position: relative;
+        }
+
+        .menu-item > a {
+            display: block;
+            padding: 15px 20px;
+            color: white;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+
+        .menu-item:hover > a {
+            background-color: #555;
+        }
+
+        .submenu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 200px;
+            background-color: #555;
+            list-style: none;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px);
+            transition: all 0.3s;
+            z-index: 100;
+        }
+
+        .menu-item:hover .submenu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .submenu li a {
+            display: block;
+            padding: 10px 20px;
+            color: white;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+
+        .submenu li a:hover {
+            background-color: #666;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
             cursor: pointer;
         }
-        .category:hover {
-            background: #d8e8f8;
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            padding: 30px 0;
         }
 
-        .subcategories {
-            display: none;
-            position: absolute;
-            left: 100%;
-            top: 0;
-            min-width: 250px;
-            background: white;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-            z-index: 100;
-            padding: 10px;
+        .product-card {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
         }
-        .category:hover .subcategories {
+
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .product-image {
+            height: 200px;
+            width: 100%;
+            background-color: #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .product-info {
+            padding: 15px;
+        }
+
+        .product-title {
+            font-size: 1rem;
+            margin-bottom: 10px;
+        }
+
+        .product-price {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #e74c3c;
+        }
+
+        .old-price {
+            text-decoration: line-through;
+            color: #777;
+            font-size: 0.9rem;
+            margin-right: 8px;
+        }
+
+        .product-button {
             display: block;
-        }
-
-        .subcategory {
-            padding: 8px;
-            margin: 5px 0;
-            position: relative;
-        }
-        .subcategory:hover {
-            background: #f5f5f5;
-        }
-
-        .items {
-            display: none;
-            position: absolute;
-            left: 100%;
-            top: 0;
-            min-width: 300px;
-            background: white;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-            z-index: 100;
+            width: 100%;
             padding: 10px;
-        }
-        .subcategory:hover .items {
-            display: block;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background-color 0.3s;
         }
 
-        .item {
+        .product-button:hover {
+            background-color: #2980b9;
+        }
+
+        /* Адаптивность */
+        @media (max-width: 992px) {
+            .product-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .product-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .menu {
+                flex-direction: column;
+                position: absolute;
+                top: 60px;
+                left: 0;
+                right: 0;
+                background-color: #444;
+                display: none;
+            }
+
+            .menu.active {
+                display: flex;
+            }
+
+            .menu-item {
+                width: 100%;
+            }
+
+            .submenu {
+                position: static;
+                width: 100%;
+                background-color: #666;
+                display: none;
+                opacity: 1;
+                visibility: visible;
+                transform: none;
+            }
+
+            .menu-item.active .submenu {
+                display: block;
+            }
+            
+            .footer-content {
+                flex-direction: column;
+            }
+            
+            .footer-column {
+                width: 100%;
+                margin-bottom: 20px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .product-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .page-title {
+            padding: 20px 0;
+            text-align: center;
+            font-size: 2rem;
+            color: #333;
+        }
+
+        footer {
+            background-color: #333;
+            color: white;
+            padding: 40px 0;
+            margin-top: 30px;
+        }
+        
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+        
+        .footer-column {
+            width: 30%;
+        }
+        
+        .footer-column h3 {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: #3498db;
+        }
+        
+        .footer-contacts li {
+            margin-bottom: 10px;
+            list-style: none;
+        }
+        
+        .footer-contacts .icon {
+            margin-right: 10px;
+            color: #3498db;
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 8px;
+        }
+        
+        .footer-links a {
+            color: #ddd;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: #3498db;
+        }
+        
+        .subscription-form {
+            display: flex;
+            margin-top: 15px;
+        }
+        
+        .subscription-input {
+            flex-grow: 1;
             padding: 10px;
-            margin: 5px 0;
-            border-bottom: 1px solid #eee;
+            border: none;
+            border-radius: 4px 0 0 4px;
         }
-        .item:last-child {
-            border-bottom: none;
+        
+        .subscription-button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 0 4px 4px 0;
+            cursor: pointer;
+            transition: background-color 0.3s;
         }
-        .item:hover {
-            background: #f8f9fa;
+        
+        .subscription-button:hover {
+            background-color: #2980b9;
+        }
+        
+        .footer-bottom {
+            margin-top: 30px;
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid #555;
+        }
+        
+        .social-links {
+            margin-top: 15px;
+        }
+        
+        .social-links a {
+            display: inline-block;
+            margin: 0 10px;
+            color: white;
+            font-size: 1.2rem;
+            transition: color 0.3s;
+        }
+        
+        .social-links a:hover {
+            color: #3498db;
+        }
+        
+        .price-block {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
         }
     </style>
 </head>
 <body>
+{% load costom_filters %}
     <header>
-        <h1>SOFTECH.KG</h1>
-        <p>Добро пожаловать в наш интернет-магазин!</p>
+        <div class="container">
+            <div class="logo">Интернет-магазин</div>
+        </div>
     </header>
-    <nav>
-        <ul>
-            <li><a href="#about">О компании</a></li>
-            <li><a href="#catalog">Каталог товаров</a></li>
-            <li><a href="#contact">Контакты</a></li>
-            <li><a href="#privacy">Политика конфиденциальности</a></li>
-        </ul>
-    </nav>
-    <section id="about">
-        <h2>О компании</h2>
-        <p>Интернет-магазин SOFTECH.KG предлагает широкий ассортимент электроники и аксессуаров по доступным ценам.</p>
-    </section>
-    <section id="catalog">
-        <h2>Каталог товаров</h2>
-        <p>В нашем каталоге представлены смартфоны, аксессуары и другие гаджеты от ведущих производителей.</p>
-
-        <div class="categories-container">
+<nav>
+    <div class="container">
+        <button class="mobile-menu-btn">☰</button>
+        <ul class="menu">
             {% for category in categories %}
-            <div class="category">
-                <h3>{{ category.name }}</h3>
-                <div class="subcategories">
-                    {% for subcategory in subcategories %}
-                        {% if subcategory.category == category %}
-                        <div class="subcategory">
-                            {{ subcategory.name }}
-                            <div class="items">
-                                {% for item in subcategory.items.all %}
-                                <div class="item">
-                                    <h4>{{ item.name_en }}</h4>
-                                    <p>{{ item.description }}</p>
-                                </div>
-                                {% endfor %}
-                            </div>
-                        </div>
-                        {% endif %}
+            <li class="menu-item">
+                <a href="#">{{ category.name_ru }}</a>
+                <ul class="submenu">
+                {% for sub_category in sub_categories|get_item:category.id %}
+                    <li><a href="#">{{sub_category.name}}</a></li>
                     {% endfor %}
+                </ul>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</nav>
+
+    <main class="container">
+        <h1 class="page-title">Популярные товары</h1>
+
+        <div class="product-grid">
+            <!-- Товар 1 -->
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="/api/placeholder/200/200" alt="Товар 1">
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">{{ product.name }}</h3>
+                    <div class="price-block">
+                        <span class="old-price">34 999 ₽</span>
+                        <span class="product-price">29 999 ₽</span>
+                    </div>
+                    <button class="product-button">В корзину</button>
                 </div>
             </div>
-            {% endfor %}
+
+            <!-- Товар 2 -->
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="/api/placeholder/200/200" alt="Товар 2">
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">Ноутбук Модель Y</h3>
+                    <div class="price-block">
+                        <span class="old-price">65 999 ₽</span>
+                        <span class="product-price">59 999 ₽</span>
+                    </div>
+                    <button class="product-button">В корзину</button>
+                </div>
+            </div>
+
+            <!-- Товар 3 -->
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="/api/placeholder/200/200" alt="Товар 3">
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">Наушники Модель Z</h3>
+                    <div class="price-block">
+                        <span class="old-price">7 999 ₽</span>
+                        <span class="product-price">5 999 ₽</span>
+                    </div>
+                    <button class="product-button">В корзину</button>
+                </div>
+            </div>
+
+            <!-- Товар 4 -->
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="/api/placeholder/200/200" alt="Товар 4">
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">Умные часы Модель A</h3>
+                    <div class="price-block">
+                        <span class="old-price">15 999 ₽</span>
+                        <span class="product-price">12 999 ₽</span>
+                    </div>
+                    <button class="product-button">В корзину</button>
+                </div>
+            </div>
+
+            <!-- Товар 5 -->
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="/api/placeholder/200/200" alt="Товар 5">
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">Телевизор Модель B</h3>
+                    <div class="price-block">
+                        <span class="old-price">52 999 ₽</span>
+                        <span class="product-price">45 999 ₽</span>
+                    </div>
+                    <button class="product-button">В корзину</button>
+                </div>
+            </div>
+
+            <!-- Товар 6 -->
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="/api/placeholder/200/200" alt="Товар 6">
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">Планшет Модель C</h3>
+                    <div class="price-block">
+                        <span class="old-price">29 999 ₽</span>
+                        <span class="product-price">24 999 ₽</span>
+                    </div>
+                    <button class="product-button">В корзину</button>
+                </div>
+            </div>
+
+            <!-- Товар 7 -->
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="/api/placeholder/200/200" alt="Товар 7">
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">Фотокамера Модель D</h3>
+                    <div class="price-block">
+                        <span class="old-price">42 999 ₽</span>
+                        <span class="product-price">35 999 ₽</span>
+                    </div>
+                    <button class="product-button">В корзину</button>
+                </div>
+            </div>
+
+            <!-- Товар 8 -->
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="/api/placeholder/200/200" alt="Товар 8">
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">Колонка Модель E</h3>
+                    <div class="price-block">
+                        <span class="old-price">9 999 ₽</span>
+                        <span class="product-price">7 999 ₽</span>
+                    </div>
+                    <button class="product-button">В корзину</button>
+                </div>
+            </div>
         </div>
-    </section>
-    <section id="contact">
-        <h2>Контакты</h2>
-        <p>Компания: {{ contacts.company_name }}</p>
-        <p>Адрес: {{ contacts.address }}</p>
-        <p>Телефон: {{ contacts.phone }}</p>
-        <p>Email: {{ contacts.email }}</p>
-        <p>Режим работы: {{ contacts.working_hours }}</p>
-        <hr>
-        <p>Свяжитесь с нами по телефону или электронной почте для получения дополнительной информации.</p>
-    </section>
-    <section id="privacy">
-        <h2>Политика конфиденциальности</h2>
-        <p>Мы уделяем большое значение охране предоставленных вами данных и обязуемся сохранять вашу конфиденциальность в Интернете.</p>
-    </section>
+    </main>
+
     <footer>
-        <p>&copy; 2025 SOFTECH.KG. Все права защищены.</p>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>Контакты</h3>
+                    <ul class="footer-contacts">
+                        <li><span class="icon">📱</span> {{ contacts.phone }}</li>
+                        <li><span class="icon">✉️</span> {{ contacts.email }}</li>
+                        <li><span class="icon">🏢</span> {{ contacts.address }}</li>
+                        <li><span class="icon">🕑</span>{{ contacts.working_hours }}</li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Информация</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">О компании</a></li>
+                        <li><a href="#">Доставка и оплата</a></li>
+                        <li><a href="#">Гарантия и возврат</a></li>
+                        <li><a href="#">Политика конфиденциальности</a></li>
+                        <li><a href="#">Публичная оферта</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Подпишитесь на новости</h3>
+                    <p>Получайте первыми информацию о новинках и акциях</p>
+                    <form class="subscription-form">
+                        <input type="email" placeholder="Ваш email" class="subscription-input" required>
+                        <button type="submit" class="subscription-button">OK</button>
+                    </form>
+                    <div class="social-links">
+                        <a href="#" title="ВКонтакте">VK</a>
+                        <a href="#" title="Telegram">TG</a>
+                        <a href="#" title="WhatsApp">WA</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>© 2025 Интернет-магазин. Все права защищены.</p>
+            </div>
+        </div>
     </footer>
+
+    <script>
+        // Мобильное меню
+        document.querySelector('.mobile-menu-btn').addEventListener('click', function() {
+            document.querySelector('.menu').classList.toggle('active');
+        });
+
+        // Для мобильной версии добавляем клик на категории
+        document.querySelectorAll('.menu-item > a').forEach(item => {
+            item.addEventListener('click', function(e) {
+                if (window.innerWidth <= 768) {
+                    e.preventDefault();
+                    this.parentNode.classList.toggle('active');
+                }
+            });
+        });
+    </script>
 </body>
 </html>

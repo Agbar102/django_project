@@ -4,7 +4,7 @@ from .models import Contacts
 
 def contacts_view(request):
     contacts = Contacts.get_solo()
-    return render(request, 'base.html', {'contacts': contacts})
+    return render(request, 'baseq.html', {'contacts': contacts})
 
 def get_common():
     common = Contacts.get_solo()
