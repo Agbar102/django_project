@@ -1,5 +1,5 @@
 
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from items.services import TemplateService
 
 def get_category(request):
@@ -46,6 +46,24 @@ def get_category_en(request):
     return render(request, 'base_en.html', context)
 
 
+
+
+# def item_det(request, items_id):
+#     data = TemplateService()
+#
+#     # Получаем конкретный товар
+#     items = get_object_or_404(data.get_items, id=items_id)
+#
+#     # Получаем остальные данные (если нужны для шаблона)
+#     categories = data.get_category()
+#     contacts = data.get_contacts()
+#
+#     context = {
+#         'items': items,  # Основной товар
+#         'categories': categories,
+#         'contacts': contacts,
+#     }
+#     return render(request, 'product_detail.html', context)
 
 
 

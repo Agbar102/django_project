@@ -43,20 +43,23 @@
         <h1 class="page-title">Популярные товары</h1>
 
         <div class="product-grid">
-            <!-- Товар 1 -->
             <div class="product-card">
                 {% for item in items %}
-                <div class="product-image">
-                    <img src="/api/placeholder/200/200" alt="Товар 1">
-                </div>
-                <div class="product-info">
-                    <h3 class="product-title">{{ item.title }}</h3>
-                    <div class="price-block">
-                        <span class="old-price">34 999 ₽</span>
+                        <div class="product-image">
+                              {% if item.image %}
+                                <img src="{{ item.image.url }}" alt="{{ item.title_ru }}">
+                              {% else %}
+                                <img src="/static/images/placeholder.jpg" alt="Нет изображения">
+                              {% endif %}
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-title">{{ item.title_ru }}</h3>
+                            <div class="price-block">
+                            <span class="old-price">34 999 ₽</span>
                         <span class="product-price">{{ item.price }}</span>
-                    </div>
-                    <button class="product-button">В корзину</button>
-                </div>
+                        </div>
+                            <button class="product-button">В корзину</button>
+                        </div>
                 {% endfor %}
             </div>
 
@@ -173,7 +176,7 @@
                 <div class="footer-column">
                     <h3>Контакты</h3>
                     <ul class="footer-contacts">
-                        <li><span class="icon">📱</span> {{ contacts.phone }}</li>
+                        <li><span class="icon">📱</span> {{ contacts.phone_ru }}</li>
                         <li><span class="icon">✉️</span> {{ contacts.email }}</li>
                         <li><span class="icon">🏢</span> {{ contacts.address }}</li>
                         <li><span class="icon">🕑</span>{{ contacts.working_hours }}</li>
