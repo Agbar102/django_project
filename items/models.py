@@ -50,7 +50,7 @@ class Item(models.Model):
     production = models.CharField(verbose_name="Производство", max_length=255, null=True, blank=True)
     model = models.CharField(verbose_name="Модель", max_length=255, null=True, blank=True)
     is_available = models.BooleanField(verbose_name="Наличие", default=False)
-    color = models.CharField("Цвет", max_length=20)
+    color = models.CharField("Цвет", max_length=20, null=True, blank=True)
     order = models.PositiveIntegerField("Порядок", default=1)
 
     def __str__(self):
